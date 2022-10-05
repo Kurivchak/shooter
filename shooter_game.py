@@ -84,7 +84,7 @@ class Asteroid(GameSprite):
 
 class Bullet(GameSprite):
     def __init__(self,x,y):
-        super().__init__("bullet.png", x,y,15,20)
+        super().__init__("bullet.png ", x,y,15,20)
         self.speed = 3
     
     def update(self):
