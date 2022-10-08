@@ -55,7 +55,7 @@ class Player(GameSprite):
             self.fire()
 
     def vampirism(self):
-        rocket.hp += 25
+        self.hp += 25
 
 
 class Ufo(GameSprite):
@@ -148,9 +148,10 @@ while run:
         for i  in collides:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
-            if rocket.hp <= 100:
-                if rocket.points == 10:
+            if rocket.hp < 100:
+                if rocket.points >= 10:
                     rocket.vampirism()
+                    hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
         if rand_num == 5:
             ufo = Ufo()
             ufos.add(ufo)
