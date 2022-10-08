@@ -20,6 +20,7 @@ font1 = font.SysFont("Impact", 50)
 font2 = font.SysFont("Impact",30)
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
+vampirism_text = font1.render("Вампіризм активовано!", True, (255,0,0))
 class GameSprite(sprite.Sprite):
     def __init__(self,image_name,x,y,width,height):
         super().__init__()
@@ -140,7 +141,7 @@ while run:
         asteroids.draw(window)
         rocket.bullets.draw(window)
         window.blit(points_text,(30,10))
-        window.blit(hp_text,(600,10))   
+        window.blit(hp_text,(600,10))
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
@@ -151,6 +152,7 @@ while run:
             if rocket.hp < 100:
                 if rocket.points >= 10:
                     rocket.vampirism()
+                    window.blit(vampirism_text,(200,200))   
                     hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
         if rand_num == 5:
             ufo = Ufo()
