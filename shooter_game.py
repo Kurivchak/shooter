@@ -54,6 +54,9 @@ class Player(GameSprite):
         if keys[K_SPACE]:
             self.fire()
 
+    def vampirism(self):
+        rocket.hp += 25
+
 
 class Ufo(GameSprite):
     def __init__(self):
@@ -92,6 +95,9 @@ class Bullet(GameSprite):
         if self.rect.y < 0 - self.height:
             self.kill()
 
+   
+
+
 
 font1 = font.SysFont("Impact", 50)
 bg_image = transform.scale(image.load("galaxy.jpg"), (WIDTH, HEIGHT))
@@ -104,7 +110,7 @@ points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-for i in range(10):
+for i in range(20):
     ufo = Ufo()
     ufos.add(ufo)
 for a in range(4):
@@ -142,6 +148,9 @@ while run:
         for i  in collides:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
+            if rocket.hp <= 100:
+                if rocket.points == 10:
+                    rocket.vampirism()
         if rand_num == 5:
             ufo = Ufo()
             ufos.add(ufo)
@@ -152,6 +161,8 @@ while run:
             rocket.hp -= 25
             hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
             
+
+            
         for kick in collide_list_2:
             rocket.hp -= 25
             hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
@@ -161,7 +172,7 @@ while run:
             finish = True
             result = font1.render("Ви програли!", True, (255,0,0))
 
-        if rocket.points == 10:
+        if rocket.points == 20:
             finish = True
             result = font1.render("Ви перемогли", True, (255,0,0))
             
