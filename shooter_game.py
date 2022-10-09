@@ -10,7 +10,7 @@ window = display.set_mode((WIDTH,HEIGHT))
 display.set_caption("Shooter")
 
 clock = time.Clock()
-counter = 25
+counter = 0
 mixer.music.load("space.ogg")
 mixer.music.set_volume(0.5)
 mixer.music.play()
@@ -117,7 +117,7 @@ points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-for i in range(20):
+for i in range(10):
     ufo = Ufo()
     ufos.add(ufo)
 for a in range(4):
@@ -135,7 +135,7 @@ while run:
         if e.type == QUIT:
             run = False
         elif e.type == timer_event:
-            counter-=1
+            counter+=1
             timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
             if counter == 0:
                 finish = True
@@ -164,18 +164,16 @@ while run:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
             if rocket.hp < 100:
-                if rocket.points >= 10:
+                if rocket.points >= 20:
                     rocket.vampirism()   
                     hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-        if rand_num == 5:
-            ufo = Ufo()
-            ufos.add(ufo)
-            if rand_ufo >= 50:
-                rand_ufo -=20
+        
 
         for kick in collide_list:
             rocket.hp -= 25
             hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+            ufo.rect.x = randint(0,WIDTH-75)
+            ufo.rect.y = randint(-200,-100)
             
 
             
