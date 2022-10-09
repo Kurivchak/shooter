@@ -7,10 +7,10 @@ font.init()
 WIDTH = 700
 HEIGHT = 500
 window = display.set_mode((WIDTH,HEIGHT))
-display.set_caption("Шутер")
+display.set_caption("Shooter")
 
 clock = time.Clock()
-counter = 30
+counter = 25
 mixer.music.load("space.ogg")
 mixer.music.set_volume(0.5)
 mixer.music.play()
@@ -23,7 +23,8 @@ timer_font = font.SysFont("Impact",40)
 timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-vampirism_text = font1.render("Вампіризм активовано!", True, (255,0,0))
+vam_font = font.SysFont("Impact",30)
+vampirism_text = vam_font.render("Вампіризм активовано!", True, (255,255,255))
 class GameSprite(sprite.Sprite):
     def __init__(self,image_name,x,y,width,height):
         super().__init__()
@@ -43,6 +44,7 @@ class Player(GameSprite):
         self.hp = 100
         self.points = 0
         self.bullets = sprite.Group()
+        self.v = False
 
     def fire(self):
         new_bullet = Bullet(self.rect.centerx,self.rect.y)
@@ -59,6 +61,7 @@ class Player(GameSprite):
             self.fire()
 
     def vampirism(self):
+        self.v = True
         self.hp += 25
 
 
@@ -114,7 +117,7 @@ points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-for i in range(0):
+for i in range(20):
     ufo = Ufo()
     ufos.add(ufo)
 for a in range(4):
@@ -151,6 +154,8 @@ while run:
         window.blit(points_text,(30,10))
         window.blit(hp_text,(600,10))
         window.blit(timerk,(10,440))
+        if rocket.v:
+            window.blit(vampirism_text,(200,10))
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
@@ -160,8 +165,7 @@ while run:
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
             if rocket.hp < 100:
                 if rocket.points >= 10:
-                    rocket.vampirism()
-                    window.blit(vampirism_text,(200,200))   
+                    rocket.vampirism()   
                     hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
         if rand_num == 5:
             ufo = Ufo()
