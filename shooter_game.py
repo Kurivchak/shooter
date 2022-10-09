@@ -10,14 +10,17 @@ window = display.set_mode((WIDTH,HEIGHT))
 display.set_caption("Шутер")
 
 clock = time.Clock()
-
+counter = 30
 mixer.music.load("space.ogg")
 mixer.music.set_volume(0.5)
 mixer.music.play()
 fire_sound = mixer.Sound("fire.ogg") 
-
+timer_event = USEREVENT+1
+time = time.set_timer(timer_event, 1000)
 font1 = font.SysFont("Impact", 50)
 font2 = font.SysFont("Impact",30)
+timer_font = font.SysFont("Impact",40)
+timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
 vampirism_text = font1.render("Вампіризм активовано!", True, (255,0,0))
@@ -111,7 +114,7 @@ points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-for i in range(20):
+for i in range(0):
     ufo = Ufo()
     ufos.add(ufo)
 for a in range(4):
@@ -128,8 +131,12 @@ while run:
     for e in event.get():
         if e.type == QUIT:
             run = False
-        
-                  
+        elif e.type == timer_event:
+            counter-=1
+            timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
+            if counter == 0:
+                run = False
+           
     if not finish:
         rocket.update()
         rocket.bullets.update()
@@ -142,6 +149,7 @@ while run:
         rocket.bullets.draw(window)
         window.blit(points_text,(30,10))
         window.blit(hp_text,(600,10))
+        window.blit(timerk,(10,440))
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
