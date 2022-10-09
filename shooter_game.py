@@ -117,9 +117,7 @@ points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-for i in range(10):
-    ufo = Ufo()
-    ufos.add(ufo)
+
 for a in range(4):
     asteroid = Asteroid()
     asteroids.add(asteroid)
@@ -137,10 +135,21 @@ while run:
         elif e.type == timer_event:
             counter+=1
             timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
-            if counter == 0:
+            if counter == 60:
                 finish = True
                 result = font1.render("Ви програли!", True, (255,0,0))
-           
+            if counter == 1:   
+                for i in range(10):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            if counter == 20:
+                for i in range(10):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            
+            
+
+
     if not finish:
         rocket.update()
         rocket.bullets.update()
@@ -167,6 +176,7 @@ while run:
                 if rocket.points >= 20:
                     rocket.vampirism()   
                     hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+        
         
 
         for kick in collide_list:
