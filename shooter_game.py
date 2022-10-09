@@ -135,7 +135,8 @@ while run:
             counter-=1
             timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
             if counter == 0:
-                run = False
+                finish = True
+                result = font1.render("Ви програли!", True, (255,0,0))
            
     if not finish:
         rocket.update()
