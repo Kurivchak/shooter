@@ -25,6 +25,7 @@ result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
 vam_font = font.SysFont("Impact",30)
 vampirism_text = vam_font.render("Вампіризм активовано!", True, (255,255,255))
+
 class GameSprite(sprite.Sprite):
     def __init__(self,image_name,x,y,width,height):
         super().__init__()
@@ -45,6 +46,8 @@ class Player(GameSprite):
         self.points = 0
         self.bullets = sprite.Group()
         self.v = False
+        self.shield = False
+        self.damage = False
 
     def fire(self):
         new_bullet = Bullet(self.rect.centerx,self.rect.y)
@@ -63,6 +66,10 @@ class Player(GameSprite):
     def vampirism(self):
         self.v = True
         self.hp += 25
+    def shield(self):
+        self.shield = True
+        self.damage = False
+
 
 
 class Ufo(GameSprite):
@@ -146,7 +153,14 @@ while run:
                 for i in range(10):
                     ufo = Ufo()
                     ufos.add(ufo)
-            
+            if counter == 30:
+                for i in range(10):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            if counter == 40:
+                for i in range(5):
+                    ufo = Ufo()
+                    ufos.add(ufo)
             
 
 
@@ -180,23 +194,30 @@ while run:
         
 
         for kick in collide_list:
-            rocket.hp -= 25
-            hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-            ufo.rect.x = randint(0,WIDTH-75)
-            ufo.rect.y = randint(-200,-100)
+            rocket.damage = True
+            if rocket.damage:
+                rocket.hp -= 25
+                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+                ufo.rect.x = randint(0,WIDTH-75)
+                ufo.rect.y = randint(-200,-100)
+                if rocket.points >= 1:
+                    rocket.damage = False
+                    rocket.shield()
             
 
             
         for kick in collide_list_2:
-            rocket.hp -= 25
-            hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+            rocket.damage = True
+            if rocket.damage:
+                rocket.hp -= 25
+                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 
 
         if rocket.hp <= 0:
             finish = True
             result = font1.render("Ви програли!", True, (255,0,0))
 
-        if rocket.points == 20:
+        if rocket.points == 40:
             finish = True
             result = font1.render("Ви перемогли", True, (255,0,0))
             
