@@ -67,7 +67,7 @@ class Player(GameSprite):
         self.v = True
         self.hp += 25
     def shield(self):
-        self.shield = True
+        self.shield_is = True
         self.damage = False
 
 
