@@ -46,8 +46,8 @@ class Player(GameSprite):
         self.points = 0
         self.bullets = sprite.Group()
         self.v = False
-        self.shield = False
-        self.damage = False
+        self.shield_is = False
+        
 
     def fire(self):
         new_bullet = Bullet(self.rect.centerx,self.rect.y)
@@ -60,18 +60,12 @@ class Player(GameSprite):
             self.rect.x -= self.speed
         if keys[K_RIGHT] and self.rect.x<WIDTH - self.width:
             self.rect.x += self.speed
-        if keys[K_SPACE]:
-            self.fire()
-
+        
     def vampirism(self):
         self.v = True
         self.hp += 25
-    def shield(self):
-        self.shield_is = True
-        self.damage = False
 
-
-
+    
 class Ufo(GameSprite):
     def __init__(self):
         rand_x = randint(0,WIDTH-75)
@@ -100,6 +94,7 @@ class Asteroid(GameSprite):
 
 
 class Bullet(GameSprite):
+
     def __init__(self,x,y):
         super().__init__("bullet.png ", x,y,15,20)
         self.speed = 3
@@ -109,16 +104,35 @@ class Bullet(GameSprite):
         if self.rect.y < 0 - self.height:
             self.kill()
 
+
+class Shield(GameSprite):
+
+    def __init__(self):
+        rand_x = randint(0,WIDTH-75)
+        rand_y = randint(-200,-100)
+        super().__init__("laser.png",rand_x,rand_y,75,75)
+        self.sp = randint(3,5)
+
+    def update(self):
+        self.rect.y += self.sp
+        if self.rect.y > HEIGHT + self.height:
+            self.kill()
+
    
 
 
 
 font1 = font.SysFont("Impact", 50)
+
 bg_image = transform.scale(image.load("galaxy.jpg"), (WIDTH, HEIGHT))
 
+bg_y1 = 0 
+bg_y2 = -HEIGHT
 rocket = Player()
+
 ufos = sprite.Group()
 asteroids = sprite.Group()
+shields = sprite.Group()
 
 points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
@@ -135,11 +149,27 @@ finish = False
 FPS = 60
 rand_ufo = 500
 while run:
-    window.blit(bg_image,(0,0))
+    window.blit(bg_image,(0,bg_y1))
+    window.blit(bg_image,(0,bg_y2))
+
+    bg_y1 += 1
+    bg_y2 += 1
+
+    if bg_y1 >= HEIGHT:
+        bg_y1 = -HEIGHT
+
+    if bg_y2 >= HEIGHT:
+        bg_y2 = -HEIGHT
+
     for e in event.get():
         if e.type == QUIT:
             run = False
-        elif e.type == timer_event:
+
+        if e.type == KEYDOWN:
+            if e.key == K_SPACE:
+                rocket.fire()
+
+        if e.type == timer_event:
             counter+=1
             timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
             if counter == 60:
@@ -164,12 +194,18 @@ while run:
             
 
 
+
     if not finish:
         rocket.update()
         rocket.bullets.update()
         ufos.update()
         asteroids.update()
         rocket.bullets.update()
+        shields.update()
+        rand_num1 = randint(0,500)
+        if rand_num1 == 25:
+            shields.add(Shield())
+        shields.draw(window)
         rocket.draw()
         ufos.draw(window)
         asteroids.draw(window)
@@ -182,7 +218,9 @@ while run:
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
+        collide_list_3 = sprite.spritecollide(rocket, shields,True)
         rand_num = randint(0,rand_ufo)
+
         for i  in collides:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
@@ -194,24 +232,26 @@ while run:
         
 
         for kick in collide_list:
-            rocket.damage = True
-            if rocket.damage:
+            if not rocket.shield_is:
                 rocket.hp -= 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
                 ufo.rect.x = randint(0,WIDTH-75)
                 ufo.rect.y = randint(-200,-100)
-                if rocket.points >= 1:
-                    rocket.damage = False
-                    rocket.shield()
-            
+            else:
+                rocket.shield_is = False
+
+        for kick in collide_list_3:
+            rocket.shield_is = True
 
             
         for kick in collide_list_2:
-            rocket.damage = True
-            if rocket.damage:
+            if not rocket.shield_is:
                 rocket.hp -= 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-
+                ufo.rect.x = randint(0,WIDTH-75)
+                ufo.rect.y = randint(-200,-100)
+            else:
+                rocket.shield_is = False
 
         if rocket.hp <= 0:
             finish = True
