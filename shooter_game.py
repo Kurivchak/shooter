@@ -61,11 +61,11 @@ class Player(GameSprite):
         if keys[K_RIGHT] and self.rect.x<WIDTH - self.width:
             self.rect.x += self.speed
         
-    def vampirism(self):
-        self.v = True
-        self.hp += 25
+    #def vampirism(self):
+        #self.v = True
+        #self.hp += 25
 
-    
+
 class Ufo(GameSprite):
     def __init__(self):
         rand_x = randint(0,WIDTH-75)
@@ -110,6 +110,19 @@ class Shield(GameSprite):
     def __init__(self):
         rand_x = randint(0,WIDTH-75)
         rand_y = randint(-200,-100)
+        super().__init__("shield.png",rand_x,rand_y,75,75)
+        self.sp = randint(3,5)
+
+    def update(self):
+        self.rect.y += self.sp
+        if self.rect.y > HEIGHT + self.height:
+            self.kill()
+
+class Vampirism(GameSprite):
+
+    def __init__(self):
+        rand_x = randint(0,WIDTH-75)
+        rand_y = randint(-200,-100)
         super().__init__("laser.png",rand_x,rand_y,75,75)
         self.sp = randint(3,5)
 
@@ -118,13 +131,12 @@ class Shield(GameSprite):
         if self.rect.y > HEIGHT + self.height:
             self.kill()
 
-   
 
 
 
 font1 = font.SysFont("Impact", 50)
 
-bg_image = transform.scale(image.load("galaxy.jpg"), (WIDTH, HEIGHT))
+bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
 
 bg_y1 = 0 
 bg_y2 = -HEIGHT
@@ -133,6 +145,7 @@ rocket = Player()
 ufos = sprite.Group()
 asteroids = sprite.Group()
 shields = sprite.Group()
+vampirism_bullets = sprite.Group()
 
 points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
@@ -176,22 +189,22 @@ while run:
                 finish = True
                 result = font1.render("Ви програли!", True, (255,0,0))
             if counter == 1:   
+                for i in range(5):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            if counter == 6:
+                for i in range(5):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            if counter == 14:
                 for i in range(10):
                     ufo = Ufo()
                     ufos.add(ufo)
             if counter == 20:
-                for i in range(10):
+                for i in range(15):
                     ufo = Ufo()
                     ufos.add(ufo)
-            if counter == 30:
-                for i in range(10):
-                    ufo = Ufo()
-                    ufos.add(ufo)
-            if counter == 40:
-                for i in range(5):
-                    ufo = Ufo()
-                    ufos.add(ufo)
-            
+        
 
 
 
@@ -200,12 +213,16 @@ while run:
         rocket.bullets.update()
         ufos.update()
         asteroids.update()
-        rocket.bullets.update()
         shields.update()
+        vampirism_bullets.update()
         rand_num1 = randint(0,500)
+        rand_num2 = randint(0,500)
         if rand_num1 == 25:
             shields.add(Shield())
+        if rand_num2 == 25:
+            vampirism_bullets.add(Vampirism())
         shields.draw(window)
+        vampirism_bullets.draw(window)
         rocket.draw()
         ufos.draw(window)
         asteroids.draw(window)
@@ -213,51 +230,62 @@ while run:
         window.blit(points_text,(30,10))
         window.blit(hp_text,(600,10))
         window.blit(timerk,(10,440))
-        if rocket.v:
-            window.blit(vampirism_text,(200,10))
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
         collide_list_3 = sprite.spritecollide(rocket, shields,True)
-        rand_num = randint(0,rand_ufo)
+        collidelist_4 = sprite.spritecollide(rocket, vampirism_bullets,True)
+
+        
 
         for i  in collides:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
-            if rocket.hp < 100:
-                if rocket.points >= 20:
-                    rocket.vampirism()   
-                    hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-        
+            
+
         
 
         for kick in collide_list:
-            if not rocket.shield_is:
+            if not rocket.shield_is and not rocket.v:
                 rocket.hp -= 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
                 ufo.rect.x = randint(0,WIDTH-75)
                 ufo.rect.y = randint(-200,-100)
             else:
                 rocket.shield_is = False
+                rocket.v = False
+
+        
+        for kick in collide_list_2:
+            if not rocket.shield_is and not rocket.v:
+                rocket.hp -= 25
+                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+                ufo.rect.x = randint(0,WIDTH-75)
+                ufo.rect.y = randint(-200,-100)
+            else:
+                rocket.shield_is = False
+                rocket.v = False   
+
 
         for kick in collide_list_3:
             rocket.shield_is = True
 
-            
-        for kick in collide_list_2:
-            if not rocket.shield_is:
-                rocket.hp -= 25
+        if rocket.v == True:
+            rocket.hp += 25
+
+        for kick in collidelist_4:
+            rocket.v = True
+            hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+            if rocket.hp > 75:
+                rocket.v = False
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-                ufo.rect.x = randint(0,WIDTH-75)
-                ufo.rect.y = randint(-200,-100)
-            else:
-                rocket.shield_is = False
+
 
         if rocket.hp <= 0:
             finish = True
             result = font1.render("Ви програли!", True, (255,0,0))
 
-        if rocket.points == 40:
+        if rocket.points == 30:
             finish = True
             result = font1.render("Ви перемогли", True, (255,0,0))
             
