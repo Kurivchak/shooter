@@ -236,11 +236,13 @@ while run:
         collide_list_3 = sprite.spritecollide(rocket, shields,True)
         collidelist_4 = sprite.spritecollide(rocket, vampirism_bullets,True)
 
-        
+      
 
         for i  in collides:
             rocket.points += 1
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
+            if rocket.v == True:
+                rocket.hp += 25
             
 
         
@@ -270,8 +272,7 @@ while run:
         for kick in collide_list_3:
             rocket.shield_is = True
 
-        if rocket.v == True:
-            rocket.hp += 25
+        
 
         for kick in collidelist_4:
             rocket.v = True
