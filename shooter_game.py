@@ -243,7 +243,7 @@ while run:
             points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
             if rocket.v == True:
                 rocket.hp += 25
-            
+                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
 
         
 
