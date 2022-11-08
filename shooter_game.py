@@ -11,7 +11,7 @@ display.set_caption("Shooter")
 
 clock = time.Clock()
 counter = 0
-mixer.music.load("space.ogg")
+mixer.music.load("through space.ogg")
 mixer.music.set_volume(0.5)
 mixer.music.play()
 fire_sound = mixer.Sound("fire.ogg") 
@@ -61,16 +61,14 @@ class Player(GameSprite):
         if keys[K_RIGHT] and self.rect.x<WIDTH - self.width:
             self.rect.x += self.speed
         
-    #def vampirism(self):
-        #self.v = True
-        #self.hp += 25
+    
 
 
 class Ufo(GameSprite):
     def __init__(self):
         rand_x = randint(0,WIDTH-75)
         rand_y = randint(-200,-100)
-        super().__init__("ufo.png",rand_x,rand_y,75,75)
+        super().__init__("ufo_2.png",rand_x,rand_y,75,75)
         self.sp = randint(3,5)
         self.hp = 100
     def update(self):
@@ -244,6 +242,11 @@ while run:
             if rocket.v == True:
                 rocket.hp += 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+                if rocket.hp <= 100:
+                    rocket.v = False
+                    hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+
+                
 
         
 
@@ -277,9 +280,7 @@ while run:
         for kick in collidelist_4:
             rocket.v = True
             hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-            if rocket.hp > 75:
-                rocket.v = False
-                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+            
 
 
         if rocket.hp <= 0:
