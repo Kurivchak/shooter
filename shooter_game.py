@@ -30,7 +30,7 @@ font3 = font.SysFont("Impact",25)
 vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
 shield_text = font3.render("Щит активовано", True, (255,255,255))
 
-player_img = image.load("rocket.png")
+player_img = image.load("restart.png")
 ufo_img = image.load("ufo_2.png")
 bullet_img = image.load("bullet.png")
 shield_img = image.load("shield.png")
@@ -140,24 +140,12 @@ class Vampirism(GameSprite):
         if self.rect.y > HEIGHT + self.height:
             self.kill()
 
-class Label():
-    def __init__(self,x,y,wdth,htx,color = None):
-        self.wdth = width
-        self.htx = height
-        self.x = x
-        self.y = y
-        self.color = color
-
-    def set_text(self, text,  fsize, text_color = RED):
-        self.image = pygame.font.SysFont("Impact", fsize).render(text, True, text_color)
-
-    def draw(self, shift_x, shift_y):
-        self.fill()
-        scene.blit(self.image, (self.x, self.y))
+class Label(Gamesprite):
+    
 
 
 
-font1 = font.SysFont("Impact", 50)
+font_1 = font.SysFont("Impact", 50)
 
 bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
 
