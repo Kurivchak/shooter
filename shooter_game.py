@@ -25,8 +25,9 @@ timer_font = font.SysFont("Impact",40)
 timerk = timer_font.render("Time:" + str(counter), True, (255,255,255))
 result = font1.render("Ви програли!", True, (255,0,0))
 result = font1.render("Ви пeремогли!", True, (255,0,0))
-vam_font = font.SysFont("Impact",30)
-vampirism_text = vam_font.render("Вампіризм активовано!", True, (255,255,255))
+font3 = font.SysFont("Impact",25)
+vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
+shield_text = font3.render("Щит активовано", True, (255,255,255))
 
 player_img = image.load("rocket.png")
 ufo_img = image.load("ufo_2.png")
@@ -236,6 +237,12 @@ while run:
         window.blit(points_text,(30,10))
         window.blit(hp_text,(600,10))
         window.blit(timerk,(10,440))
+
+        if rocket.v == True:
+            window.blit(vampirism_text,(430,40))
+        if rocket.shield_is == True:
+            window.blit(shield_text,(500,60))
+
         collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
         collide_list = sprite.spritecollide(rocket, ufos,True)
         collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
@@ -250,6 +257,7 @@ while run:
             if rocket.v == True:
                 rocket.hp += 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+                vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
                 if rocket.hp <= 100:
                     rocket.v = False
                     hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
