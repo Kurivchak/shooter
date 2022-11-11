@@ -10,6 +10,7 @@ window = display.set_mode((WIDTH,HEIGHT))
 display.set_caption("Shooter")
 clock = time.Clock()
 counter = 0
+RED = (255,0,0)
 
 mixer.music.load("through space.ogg")
 mixer.music.set_volume(0.5)
@@ -35,6 +36,7 @@ bullet_img = image.load("bullet.png")
 shield_img = image.load("shield.png")
 laser_img = image.load("laser.png")
 asteroid_img = image.load("asteroid.png")
+
 class GameSprite(sprite.Sprite):
     def __init__(self,img,x,y,width,height):
         super().__init__()
@@ -138,12 +140,30 @@ class Vampirism(GameSprite):
         if self.rect.y > HEIGHT + self.height:
             self.kill()
 
+class Label():
+    def __init__(self,x,y,wdth,htx,color = None):
+        self.wdth = width
+        self.htx = height
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def set_text(self, text,  fsize, text_color = RED):
+        self.image = pygame.font.SysFont("Impact", fsize).render(text, True, text_color)
+
+    def draw(self, shift_x, shift_y):
+        self.fill()
+        scene.blit(self.image, (self.x, self.y))
 
 
 
 font1 = font.SysFont("Impact", 50)
 
 bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
+
+restart = Label(250,250,180,100,None)
+restart.set_text("Restart", 50, RED)
+restart.draw(5,30)
 
 bg_y1 = 0 
 bg_y2 = -HEIGHT
