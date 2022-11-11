@@ -213,8 +213,6 @@ while run:
                     ufos.add(ufo)
         
 
-
-
     if not finish:
         rocket.update()
         rocket.bullets.update()
@@ -243,9 +241,9 @@ while run:
         if rocket.shield_is == True:
             window.blit(shield_text,(500,60))
 
-        collides = sprite.groupcollide(ufos,rocket.bullets, True, True)
-        collide_list = sprite.spritecollide(rocket, ufos,True)
-        collide_list_2 = sprite.spritecollide(rocket, asteroids,True)
+        collides = sprite.groupcollide(ufos,rocket.bullets,True,True)
+        collide_list = sprite.spritecollide(rocket, ufos,False)
+        collide_list_2 = sprite.spritecollide(rocket, asteroids,False)
         collide_list_3 = sprite.spritecollide(rocket, shields,True)
         collidelist_4 = sprite.spritecollide(rocket, vampirism_bullets,True)
 
@@ -270,8 +268,8 @@ while run:
             if not rocket.shield_is and not rocket.v:
                 rocket.hp -= 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-                ufo.rect.x = randint(0,WIDTH-75)
-                ufo.rect.y = randint(-200,-100)
+                kick.rect.x = randint(0,WIDTH-75)
+                kick.rect.y = randint(-200,-100)
             else:
                 rocket.shield_is = False
                 rocket.v = False
@@ -281,8 +279,8 @@ while run:
             if not rocket.shield_is and not rocket.v:
                 rocket.hp -= 25
                 hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
-                ufo.rect.x = randint(0,WIDTH-75)
-                ufo.rect.y = randint(-200,-100)
+                kick.rect.x = randint(0,WIDTH-75)
+                kick.rect.y = randint(-200,-100)
             else:
                 rocket.shield_is = False
                 rocket.v = False   
