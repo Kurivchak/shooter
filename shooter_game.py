@@ -29,6 +29,7 @@ result = font1.render("Ви пeремогли!", True, (255,0,0))
 font3 = font.SysFont("Impact",25)
 vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
 shield_text = font3.render("Щит активовано", True, (255,255,255))
+restart_text = font3.render("Рестартнути рівень", True, (255,255,255))
 
 restart_img = image.load("restart.png")
 player_img = image.load("rocket.png")
@@ -150,7 +151,7 @@ font1 = font.SysFont("Impact", 50)
 
 bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
 
-restart = GameSprite(restart_img, 250,250,180,100)
+restart = GameSprite(restart_img, 250,300,180,100)
 
 bg_y1 = 0 
 bg_y2 = -HEIGHT
@@ -175,6 +176,7 @@ run = True
 finish = False
 FPS = 60
 rand_ufo = 500
+
 while run:
     window.blit(bg_image,(0,bg_y1))
     window.blit(bg_image,(0,bg_y2))
@@ -247,6 +249,7 @@ while run:
             window.blit(vampirism_text,(430,40))
         if rocket.shield_is == True:
             window.blit(shield_text,(500,60))
+        
 
         collides = sprite.groupcollide(ufos,rocket.bullets,True,True)
         collide_list = sprite.spritecollide(rocket, ufos,False)
@@ -316,7 +319,10 @@ while run:
             
 
     else:
-        window.blit(result, (200,200))       
+        window.blit(result,(200,200))
+        restart.draw()
+        window.blit(restart_text,(250,450))
+        restart_text = font3.render("Рестартнути рівень", True, (255,255,255))       
     display.update()
     clock.tick(FPS)
 
