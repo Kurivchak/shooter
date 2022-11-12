@@ -30,7 +30,7 @@ font3 = font.SysFont("Impact",25)
 vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
 shield_text = font3.render("Щит активовано", True, (255,255,255))
 
-player_img = image.load("restart.png")
+player_img = image.load("rocket.png")
 ufo_img = image.load("ufo_2.png")
 bullet_img = image.load("bullet.png")
 shield_img = image.load("shield.png")
@@ -140,18 +140,16 @@ class Vampirism(GameSprite):
         if self.rect.y > HEIGHT + self.height:
             self.kill()
 
-class Label(Gamesprite):
+
     
 
 
 
-font_1 = font.SysFont("Impact", 50)
+font1 = font.SysFont("Impact", 50)
 
 bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
 
-restart = Label(250,250,180,100,None)
-restart.set_text("Restart", 50, RED)
-restart.draw(5,30)
+restart = GameSprite("restart.png", 250,250,180,100)
 
 bg_y1 = 0 
 bg_y2 = -HEIGHT
@@ -308,10 +306,12 @@ while run:
         if rocket.hp <= 0:
             finish = True
             result = font1.render("Ви програли!", True, (255,0,0))
+            restart.draw()
 
         if rocket.points == 30:
             finish = True
             result = font1.render("Ви перемогли", True, (255,0,0))
+            restart.draw()
             
 
     else:
