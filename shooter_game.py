@@ -321,7 +321,7 @@ while run:
         window.blit(restart_text,(250,450))
         restart_text = font3.render("Рестартнути рівень", True, (255,255,255))
         click = mouse.get_pressed()
-        if click == [0]:
+        if click[0]:
             x,y = mouse.get_pos()
             if restart.rect.collidepoint(x,y):
                 finish = False
@@ -330,6 +330,8 @@ while run:
                 asteroids = sprite.Group()
                 shields = sprite.Group()
                 vampirism_bullets = sprite.Group()
+                kick.rect.x = randint(0,WIDTH-75)
+                kick.rect.y = randint(-200,-100)
 
     display.update()
     clock.tick(FPS)
