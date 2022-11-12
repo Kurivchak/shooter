@@ -30,6 +30,7 @@ font3 = font.SysFont("Impact",25)
 vampirism_text = font3.render("Вампіризм активовано", True, (255,255,255))
 shield_text = font3.render("Щит активовано", True, (255,255,255))
 
+restart_img = image.load("restart.png")
 player_img = image.load("rocket.png")
 ufo_img = image.load("ufo_2.png")
 bullet_img = image.load("bullet.png")
@@ -149,7 +150,7 @@ font1 = font.SysFont("Impact", 50)
 
 bg_image = transform.scale(image.load("space_2.png"), (WIDTH, HEIGHT))
 
-restart = GameSprite("restart.png", 250,250,180,100)
+restart = GameSprite(restart_img, 250,250,180,100)
 
 bg_y1 = 0 
 bg_y2 = -HEIGHT
