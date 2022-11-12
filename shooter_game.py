@@ -173,6 +173,7 @@ run = True
 finish = False
 FPS = 60
 rand_ufo = 500
+reset = False
 
 while run:
     window.blit(bg_image,(0,bg_y1))
@@ -330,8 +331,7 @@ while run:
                 asteroids = sprite.Group()
                 shields = sprite.Group()
                 vampirism_bullets = sprite.Group()
-                kick.rect.x = randint(0,WIDTH-75)
-                kick.rect.y = randint(-200,-100)
+    if reset == True:
 
     display.update()
     clock.tick(FPS)
