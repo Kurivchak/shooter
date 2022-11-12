@@ -143,9 +143,6 @@ class Vampirism(GameSprite):
             self.kill()
 
 
-    
-
-
 
 font1 = font.SysFont("Impact", 50)
 
@@ -322,7 +319,18 @@ while run:
         window.blit(result,(200,200))
         restart.draw()
         window.blit(restart_text,(250,450))
-        restart_text = font3.render("Рестартнути рівень", True, (255,255,255))       
+        restart_text = font3.render("Рестартнути рівень", True, (255,255,255))
+        click = mouse.get_pressed()
+        if click == [0]:
+            x,y = mouse.get_pos()
+            if restart.rect.collidepoint(x,y):
+                finish = False
+                rocket = Player()
+                ufos = sprite.Group()
+                asteroids = sprite.Group()
+                shields = sprite.Group()
+                vampirism_bullets = sprite.Group()
+
     display.update()
     clock.tick(FPS)
 
