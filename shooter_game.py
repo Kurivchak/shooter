@@ -218,6 +218,16 @@ while run:
                 for i in range(15):
                     ufo = Ufo()
                     ufos.add(ufo)
+            if counter == 30:
+                for i in range(10):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+            if counter == 40:
+                for i in range(10):
+                    ufo = Ufo()
+                    ufos.add(ufo)
+
+
         
 
     if not finish:
@@ -331,7 +341,16 @@ while run:
                 asteroids = sprite.Group()
                 shields = sprite.Group()
                 vampirism_bullets = sprite.Group()
-    if reset == True:
+                points_text = font2.render("Points:" + str(rocket.points), True, (255,255,255))
+                hp_text = font2.render("Life:" + str(rocket.hp), True, (255,255,255))
+                result = font1.render("Ви програли!", True, (255,0,0))
+                result = font1.render("Ви пeремогли!", True, (255,0,0))
+
+                for a in range(4):
+                    asteroid = Asteroid()
+                    asteroids.add(asteroid)
+
+    
 
     display.update()
     clock.tick(FPS)
