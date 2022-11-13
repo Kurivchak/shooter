@@ -336,6 +336,8 @@ while run:
             x,y = mouse.get_pos()
             if restart.rect.collidepoint(x,y):
                 finish = False
+                counter = 0
+                points = 0
                 rocket = Player()
                 ufos = sprite.Group()
                 asteroids = sprite.Group()
